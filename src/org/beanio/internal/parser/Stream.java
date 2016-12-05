@@ -16,6 +16,7 @@
 package org.beanio.internal.parser;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.util.*;
 
 import org.beanio.*;
@@ -90,6 +91,23 @@ public class Stream {
         BeanReaderImpl reader = new BeanReaderImpl(context, layout);
         reader.setIgnoreUnidentifiedRecords(ignoreUnidentifiedRecords);
         return reader;
+    }
+
+    public BinaryBeanReader createBinaryBeanReader(InputStream in, Locale locale, Charset charset) {
+//        if (in == null) {
+//            throw new NullPointerException("null reader");
+//        }
+//
+//        UnmarshallingContext context = format.createUnmarshallingContext();
+//        initContext(context);
+//        context.setMessageFactory(messageFactory);
+//        context.setLocale(locale);
+//        context.setRecordReader(format.createRecordReader(in));
+//
+//        BeanReaderImpl reader = new BeanReaderImpl(context, layout);
+//        reader.setIgnoreUnidentifiedRecords(ignoreUnidentifiedRecords);
+//        return reader;
+        throw new RuntimeException("Not implemented yet...");
     }
     
     /**

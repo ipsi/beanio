@@ -16,6 +16,7 @@
 package org.beanio.internal;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -76,7 +77,27 @@ public class DefaultStreamFactory extends StreamFactory {
                 throw new IllegalArgumentException("Read mode not supported for stream mapping '" + name + "'");
         }
     }
-    
+
+    @Override
+    public BinaryBeanReader createBinaryReader(String name, InputStream in, Locale locale, Charset charset) throws IllegalArgumentException {
+        if (locale == null) {
+            locale = Locale.getDefault();
+        }
+
+        if (charset == null) {
+            charset = Charset.defaultCharset();
+        }
+
+        Stream stream = getStream(name);
+        switch (stream.getMode()) {
+            case Stream.READ_WRITE_MODE:
+            case Stream.READ_ONLY_MODE:
+                return stream.createBinaryBeanReader(in, locale, charset);
+            default:
+                throw new IllegalArgumentException("Read mode not supported for stream mapping '" + name + "'");
+        }
+    }
+
     @Override
     public Unmarshaller createUnmarshaller(String name, Locale locale) {
         if (locale == null) {

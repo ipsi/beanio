@@ -16,6 +16,7 @@
 package org.beanio;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.util.*;
 
 import org.beanio.builder.StreamBuilder;
@@ -56,6 +57,10 @@ public abstract class StreamFactory {
     public BeanReader createReader(String name, String filename) throws IllegalArgumentException, BeanReaderIOException {
         return createReader(name, new File(filename));
     }
+
+    public BinaryBeanReader createBinaryReader(String name, String filename) throws IllegalArgumentException, BeanReaderIOException {
+        return createBinaryReader(name, new File(filename));
+    }
     
     /**
      * Creates a new <tt>BeanReader</tt> for reading from a file.
@@ -86,6 +91,18 @@ public abstract class StreamFactory {
         }
     }
 
+    public BinaryBeanReader createBinaryReader(String name, File file) throws IllegalArgumentException, BeanReaderIOException {
+        if (!isMapped(name)) {
+            throw new IllegalArgumentException("No stream mapping configured for name '" + name + "'");
+        }
+
+        try(InputStream in = new BufferedInputStream(new FileInputStream(file))) {
+            return createBinaryReader(name, in);
+        } catch (IOException e) {
+            throw new BeanReaderIOException("Failed to open file '" + file + "' for reading", e);
+        }
+    }
+
     /**
      * Creates a new <tt>BeanReader</tt> for reading from the given input stream.
      * @param name the name of the stream in the mapping file
@@ -98,6 +115,10 @@ public abstract class StreamFactory {
         return createReader(name, in, Locale.getDefault());
     }
 
+    public BinaryBeanReader createBinaryReader(String name, InputStream in) throws IllegalArgumentException {
+        return createBinaryReader(name, in, Locale.getDefault(), Charset.defaultCharset());
+    }
+
     /**
      * Creates a new <tt>BeanReader</tt> for reading from a stream.
      * @param name the name of the stream in the mapping file
@@ -108,6 +129,9 @@ public abstract class StreamFactory {
      *   if the stream mapping mode does not support reading an input stream
      */
     public abstract BeanReader createReader(String name, Reader in, Locale locale)
+        throws IllegalArgumentException;
+
+    public abstract BinaryBeanReader createBinaryReader(String name, InputStream in, Locale locale, Charset charset)
         throws IllegalArgumentException;
 
     /**
