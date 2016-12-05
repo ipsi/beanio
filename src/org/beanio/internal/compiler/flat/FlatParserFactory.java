@@ -63,8 +63,8 @@ public abstract class FlatParserFactory extends ParserFactorySupport {
                 return p;
             }
             
-            if (component instanceof Field) {
-                p = ((FlatFieldFormat)((Field)component).getFormat()).getPosition();
+            if (component instanceof TextField) {
+                p = ((FlatFieldFormat)((TextField)component).getFormat()).getPosition();
             }
             else if (component instanceof Aggregation) {
                 p = getPosition(((Aggregation)component).getFirst());

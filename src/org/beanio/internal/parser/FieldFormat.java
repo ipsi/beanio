@@ -16,7 +16,7 @@
 package org.beanio.internal.parser;
 
 /**
- * A <tt>FieldFormat</tt> provides format specific processing for a {@link Field} parser.
+ * A <tt>FieldFormat</tt> provides format specific processing for a {@link TextField} parser.
  * 
  * <p>Implementations of this interface must be thread-safe.
  * 

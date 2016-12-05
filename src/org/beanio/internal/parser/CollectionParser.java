@@ -21,7 +21,7 @@ import java.util.*;
 import org.beanio.internal.util.StringUtil;
 
 /**
- * A <tt>CollectionParser</tt> provides iteration support for a {@link Segment} or {@link Field},
+ * A <tt>CollectionParser</tt> provides iteration support for a {@link Segment} or {@link TextField},
  * and is optionally bound to a {@link Collection} type property value.
  * 
  * <p>A <tt>CollectionParser</tt> must contain exactly one child {@link ParserComponent}.

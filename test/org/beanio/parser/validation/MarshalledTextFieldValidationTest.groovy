@@ -11,7 +11,7 @@ import org.junit.Test
  * @author Kevin Seim
  */
 @Ignore
-class MarshalledFieldValidationTest extends AbstractParserTest {
+class MarshalledTextFieldValidationTest extends AbstractParserTest {
 
     @Test(expected=InvalidBeanException.class)
     void testRequired() {

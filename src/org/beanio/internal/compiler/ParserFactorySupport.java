@@ -24,7 +24,7 @@ import org.beanio.BeanIOConfigurationException;
 import org.beanio.internal.compiler.accessor.*;
 import org.beanio.internal.config.*;
 import org.beanio.internal.parser.*;
-import org.beanio.internal.parser.Field;
+import org.beanio.internal.parser.TextField;
 import org.beanio.internal.parser.accessor.*;
 import org.beanio.internal.parser.message.ResourceBundleMessageFactory;
 import org.beanio.internal.util.*;
@@ -647,7 +647,7 @@ public abstract class ParserFactorySupport extends ProcessorSupport implements P
         Aggregation aggregation = createAggregation(config, property);
         
         if (config.getOccursRef() != null) {
-            Field occurs = findDynamicOccurs(parserStack.getLast(), config.getOccursRef());
+            TextField occurs = findDynamicOccurs(parserStack.getLast(), config.getOccursRef());
             aggregation.setOccurs(occurs);
         }
         
@@ -788,19 +788,19 @@ public abstract class ParserFactorySupport extends ProcessorSupport implements P
             throw new BeanIOConfigurationException("Missing field name");
         }
         
-        Field field = new Field();
-        field.setName(config.getLabel());
-        field.setIdentifier(config.isIdentifier());
-        field.setRequired(config.isRequired());
-        field.setTrim(config.isTrim());
-        field.setLazy(config.isLazy());
-        field.setLiteral(config.getLiteral());
-        field.setMinLength(config.getMinLength());
-        field.setMaxLength(config.getMaxLength());
-        field.setBound(config.isBound());
+        TextField textField = new TextField();
+        textField.setName(config.getLabel());
+        textField.setIdentifier(config.isIdentifier());
+        textField.setRequired(config.isRequired());
+        textField.setTrim(config.isTrim());
+        textField.setLazy(config.isLazy());
+        textField.setLiteral(config.getLiteral());
+        textField.setMinLength(config.getMinLength());
+        textField.setMaxLength(config.getMaxLength());
+        textField.setBound(config.isBound());
 
         try {
-            field.setRegex(config.getRegex());
+            textField.setRegex(config.getRegex());
         }
         catch (PatternSyntaxException ex) {
             throw new BeanIOConfigurationException("Invalid regex pattern", ex);
@@ -812,7 +812,7 @@ public abstract class ParserFactorySupport extends ProcessorSupport implements P
             if (propertyType == null) {
                 throw new BeanIOConfigurationException("Invalid type or type alias '" + config.getType() + "'");
             }
-            field.setPropertyType(propertyType);
+            textField.setPropertyType(propertyType);
         }
         
         // whether or not this property is bound to a bean property, Collections targets are not
@@ -820,10 +820,10 @@ public abstract class ParserFactorySupport extends ProcessorSupport implements P
         
         Aggregation aggregation = null;
         if (config.isRepeating()) {
-            aggregation = createAggregation(config, field);
+            aggregation = createAggregation(config, textField);
             
             if (config.getOccursRef() != null) {
-                Field occurs = findDynamicOccurs(parserStack.getLast(), config.getOccursRef());
+                TextField occurs = findDynamicOccurs(parserStack.getLast(), config.getOccursRef());
                 aggregation.setOccurs(occurs);
             }
             
@@ -834,21 +834,21 @@ public abstract class ParserFactorySupport extends ProcessorSupport implements P
         }
         else {
             if (bind) {
-                reflectPropertyType(config, field);
+                reflectPropertyType(config, textField);
             }
         }
 
         // if not already determined, this will update the field type
-        field.setHandler(findTypeHandler(config, field));           
+        textField.setHandler(findTypeHandler(config, textField));
         
         // set the default field value using the configured type handler
-        field.setDefaultValue(parseDefaultValue(field, config.getDefault()));
+        textField.setDefaultValue(parseDefaultValue(textField, config.getDefault()));
 
-        field.setFormat(createFieldFormat(config, field.getType()));
+        textField.setFormat(createFieldFormat(config, textField.getType()));
         
-        pushParser(field);
+        pushParser(textField);
         if (bind) {
-            pushProperty(field);
+            pushProperty(textField);
             popProperty();
         }
         popParser();
@@ -859,16 +859,16 @@ public abstract class ParserFactorySupport extends ProcessorSupport implements P
                 popProperty();
             }
             
-            reflectAggregationType(config, aggregation, field);
+            reflectAggregationType(config, aggregation, textField);
         }
     }
 
-    private Field findDynamicOccurs(Component segment, String name) {
+    private TextField findDynamicOccurs(Component segment, String name) {
         Component c = findDescendant("value", segment, name);
-        if (c == null || !(c instanceof Field)) {
+        if (c == null || !(c instanceof TextField)) {
             throw new BeanIOConfigurationException("Referenced field '" + name + "' not found");
         }
-        Field f = (Field) c;
+        TextField f = (TextField) c;
         if (!Number.class.isAssignableFrom(f.getType())) {
             throw new BeanIOConfigurationException("Referenced field '" + name + "' must be assignable to java.lang.Number");
         }
@@ -1617,16 +1617,16 @@ public abstract class ParserFactorySupport extends ProcessorSupport implements P
     
     /**
      * Parses a default field value.
-     * @param field the field
+     * @param textField the field
      * @param text the text to parse
      * @return the default value
      */
-    protected Object parseDefaultValue(Field field, String text) {
+    protected Object parseDefaultValue(TextField textField, String text) {
         if (text == null) {
             return null;
         }
         
-        TypeHandler handler = field.getHandler();
+        TypeHandler handler = textField.getHandler();
         if (handler != null) {
             try {
                 return handler.parse(text);

@@ -267,7 +267,7 @@ public class Segment extends ParserComponent {
         s.append(", ").append(DebugUtil.formatOption("repeating", repeating));
         s.append(", ").append(DebugUtil.formatOption("optional", isOptional()));
         if (property != null) {
-            if (property instanceof Field) {
+            if (property instanceof TextField) {
                 s.append(", property=$").append(property.getName());
             }
             else {

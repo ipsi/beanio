@@ -37,7 +37,7 @@ public abstract class Aggregation extends DelegatingParser implements Property, 
     // true if null should be returned for an empty collection
     protected boolean lazy;
     // the property that dictates the number of occurrences or null if its not dynamic
-    protected Field occurs;
+    protected TextField occurs;
     
     // the current iteration index
     private ParserLocal<Integer> index = new ParserLocal<Integer>();
@@ -195,11 +195,11 @@ public abstract class Aggregation extends DelegatingParser implements Property, 
         this.maxOccurs = maxOccurs;
     }
     
-    public Field getOccurs() {
+    public TextField getOccurs() {
         return occurs;
     }
 
-    public void setOccurs(Field occurs) {
+    public void setOccurs(TextField occurs) {
         this.occurs = occurs;
     }
 
