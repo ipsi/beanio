@@ -41,7 +41,7 @@ public interface BeanWriter extends Debuggable, AutoCloseable {
      * @throws InvalidBeanException if BeanIO is configured to validate fields during marshalling,
      *   and a field does not meet the configured validation rules
      */
-    public void write(Object bean) throws BeanWriterException, BeanWriterIOException;
+    void write(Object bean) throws BeanWriterException;
 
     /**
      * Writes a bean object to this output stream.
@@ -54,14 +54,14 @@ public interface BeanWriter extends Debuggable, AutoCloseable {
      * @throws InvalidBeanException if BeanIO is configured to validate fields during marshalling,
      *   and a field does not meet the configured validation rules
      */
-    public void write(String recordName, Object bean) throws BeanWriterException;
+    void write(String recordName, Object bean) throws BeanWriterException;
 
     /**
      * Flushes this output stream.
      * @throws BeanWriterIOException if the underlying output stream throws an {@link IOException},
      *   or if this writer is closed
      */
-    public void flush() throws BeanWriterIOException;
+    void flush() throws BeanWriterIOException;
 
     /**
      * Closes this output stream.
@@ -69,6 +69,6 @@ public interface BeanWriter extends Debuggable, AutoCloseable {
      *   or if this writer is already closed
      */
     @Override
-	public void close() throws BeanWriterIOException;
+	void close() throws BeanWriterIOException;
 
 }

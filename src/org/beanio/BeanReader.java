@@ -44,7 +44,7 @@ public interface BeanReader extends Debuggable, Closeable {
 	 * @throws InvalidRecordException if the record was identified and failed record
 	 *   or field level validations (including field type conversion errors)
 	 */
-	public Object read() throws BeanReaderIOException, MalformedRecordException,
+	Object read() throws BeanReaderIOException, MalformedRecordException,
 		UnidentifiedRecordException, UnexpectedRecordException, InvalidRecordException;
 	
 	/**
@@ -64,7 +64,7 @@ public interface BeanReader extends Debuggable, Closeable {
      * @throws UnexpectedRecordException if a record is out of sequence
      * @since 1.2
 	 */
-	public int skip(int count) throws BeanReaderIOException, MalformedRecordException,
+	int skip(int count) throws BeanReaderIOException, MalformedRecordException,
         UnidentifiedRecordException, UnexpectedRecordException;
 	
 	/**
@@ -72,7 +72,7 @@ public interface BeanReader extends Debuggable, Closeable {
 	 * read from this reader, or null if the end of the stream was reached.
 	 * @return the record or group name
 	 */
-	public String getRecordName();
+	String getRecordName();
 	
 	/**
 	 * Returns the starting line number of the first record for the most recent bean
@@ -80,7 +80,7 @@ public interface BeanReader extends Debuggable, Closeable {
 	 * The line number may be zero if new lines are not used to separate characters.  
 	 * @return the line number
 	 */
-	public int getLineNumber();
+	int getLineNumber();
 	
 	/**
 	 * Returns the number of records read from the underlying input stream for the
@@ -90,7 +90,7 @@ public interface BeanReader extends Debuggable, Closeable {
 	 * @return the record count
 	 * @since 2.0
 	 */
-	public int getRecordCount();
+	int getRecordCount();
 	
 	/**
 	 * Returns record information for the most recent bean object read from this reader.
@@ -102,7 +102,7 @@ public interface BeanReader extends Debuggable, Closeable {
 	 * @see #getRecordCount()
 	 * @since 2.0
 	 */
-	public RecordContext getRecordContext(int index) throws IndexOutOfBoundsException;
+	RecordContext getRecordContext(int index) throws IndexOutOfBoundsException;
 	
 	/**
 	 * Closes the underlying input stream.
@@ -110,11 +110,11 @@ public interface BeanReader extends Debuggable, Closeable {
      *   {@link IOException} or this reader was already closed
 	 */
     @Override
-	public void close() throws BeanReaderIOException;
+	void close() throws BeanReaderIOException;
 
     /**
      * Sets the error handler to handle exceptions thrown by {@link #read()}.
      * @param errorHandler the {@link BeanReaderErrorHandler}
      */
-    public void setErrorHandler(BeanReaderErrorHandler errorHandler);
+    void setErrorHandler(BeanReaderErrorHandler errorHandler);
 }
